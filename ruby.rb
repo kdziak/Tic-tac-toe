@@ -3,26 +3,45 @@
 # class for the game.
 class TikTacToe
   def initialize
+    @turn_counter = 1
+    @game_state = true
     puts 'Enter player 1 name.'
     @player_one = gets.chomp
     puts 'Enter Player 2 name.'
     @player_two = gets.chomp
     puts "Hello #{@player_one}, and #{@player_two}!"
-    @board = Array.new(3) { Array.new(3, :e) }
+    @board = (1..9).to_a
     display_board
     play_game
   end
 
   def display_board
-    puts "#{@board[0][0]=1} | #{@board[0][1]=2} | #{@board[0][2]=3}"
+    puts "#{@board[0]} | #{@board[1]} | #{@board[2]}"
     puts '--|---|---'
-    puts "#{@board[1][0]=4} | #{@board[1][1]=5} | #{@board[1][2]=6}"
+    puts "#{@board[3]} | #{@board[4]} | #{@board[5]}"
     puts '--|---|---'
-    puts "#{@board[2][0]=7} | #{@board[2][1]=8} | #{@board[2][2]=9}"
+    puts "#{@board[6]} | #{@board[7]} | #{@board[8]}"
   end
 
   def play_game
-    puts "#{@player_one} what square do you choose?"
+    while @turn_counter <= 9
+      puts "#{@player_one} what square do you choose?"
+      choice = gets.chomp.to_i
+      @board[choice - 1] = 'X'
+      display_board
+      @turn_counter += 1
+      if @turn_counter.even? && @turn_counter < 10
+        puts "#{@player_two} what square do you choose?"
+        choice = gets.chomp.to_i
+        @board[choice - 1] = 'O'
+        display_board
+        @turn_counter += 1
+      end
+    end
+  end
+
+  def legal_move
+    
   end
 end
 
