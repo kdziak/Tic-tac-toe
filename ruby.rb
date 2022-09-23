@@ -1,21 +1,45 @@
 # frozen_string_literal: true
 
-# class for the game.
+# class pratice
+class Player
+  attr_accessor :name, :piece
+
+  def initialize(player_number)
+    @player_number = player_number
+    player_name(@player_number)
+    pick_peice
+  end
+
+  def player_name(player_number)
+    puts "Player #{player_number} what is your name?"
+    @name = gets.chomp
+  end
+
+  def pick_peice
+    puts "#{@name} do you want X's or O's?"
+    @piece = gets.chomp
+  end
+end
+
+# class for game loop
 class TikTacToe
   def initialize
-    @turn_counter = 1
-    @game_state = true
-    puts 'Enter player 1 name.'
-    @player_one = gets.chomp
-    puts 'Enter Player 2 name.'
-    @player_two = gets.chomp
-    puts "Hello #{@player_one}, and #{@player_two}!"
     @board = (1..9).to_a
-    display_board
-    play_game
+    @p1 = Player.new(1)
+    @p2 = Player.new(2)
+    @game_over = false
+    greetings
+    play
+  end
+
+  def greetings
+    puts "Hello #{@p1.name} and #{@p2.name}"
+    puts "#{@p1.name} is #{@p1.piece}'s"
+    puts "#{@p2.name} is #{@p2.piece}'s"
   end
 
   def display_board
+    puts ""
     puts "#{@board[0]} | #{@board[1]} | #{@board[2]}"
     puts '--|---|---'
     puts "#{@board[3]} | #{@board[4]} | #{@board[5]}"
@@ -23,25 +47,21 @@ class TikTacToe
     puts "#{@board[6]} | #{@board[7]} | #{@board[8]}"
   end
 
-  def play_game
-    while @turn_counter <= 9
-      puts "#{@player_one} what square do you choose?"
-      choice = gets.chomp.to_i
-      @board[choice - 1] = 'X'
-      display_board
-      @turn_counter += 1
-      if @turn_counter.even? && @turn_counter < 10
-        puts "#{@player_two} what square do you choose?"
-        choice = gets.chomp.to_i
-        @board[choice - 1] = 'O'
+  def play
+    player = @p1
+    available_postions = (1..9).to_a
+
+      until @game_over
         display_board
-        @turn_counter += 1
+        puts "#{player.name} choose a space."
+        player_choice = gets.chomp.to_i
+        player_move(player_choice, player)
+        player == @p1 ? player = @p2 : player = @p1
       end
-    end
   end
 
-  def legal_move
-    
+  def player_move(player_choice, player)
+    @board[player_choice - 1] = player.piece
   end
 end
 
