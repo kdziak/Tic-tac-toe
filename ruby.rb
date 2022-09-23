@@ -51,17 +51,27 @@ class TikTacToe
     player = @p1
     available_postions = (1..9).to_a
 
-      until @game_over
-        display_board
-        puts "#{player.name} choose a space."
+    until @game_over
+      display_board
+      puts "#{player.name} choose a space."
+      player_choice = gets.chomp.to_i
+      until valid_move(player_choice, player, available_postions)
+        p 'That is not a vaild move'
+        p 'Please enter a vaild move'
         player_choice = gets.chomp.to_i
-        player_move(player_choice, player)
-        player == @p1 ? player = @p2 : player = @p1
       end
+      player_move(player, player_choice, available_postions)
+      player == @p1 ? player = @p2 : player = @p1
+    end
   end
 
-  def player_move(player_choice, player)
+  def valid_move(player_choice, player, available_postions)
+    available_postions.include?(player_choice)
+  end
+
+  def player_move(player, player_choice, available_postions)
     @board[player_choice - 1] = player.piece
+    available_postions[player_choice - 1] = player.piece
   end
 end
 
